@@ -1,0 +1,23 @@
+:root { --green: #1DB954; --bg: #121212; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden; }
+
+#splash-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 2000; }
+.spotify-logo { width: 70px; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0% { opacity: 0.6; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.6; transform: scale(0.9); } }
+
+.hidden { display: none !important; }
+.player-wrapper { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; padding: 30px 20px; background: linear-gradient(to bottom, #2c2c2c 0%, #000 100%); }
+.art-box img { width: 80vw; max-width: 320px; aspect-ratio: 1/1; border-radius: 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.7); object-fit: cover; }
+.info-box { text-align: center; width: 100%; }
+.info-box h1 { font-size: 22px; margin: 0; }
+.info-box p { color: #b3b3b3; margin: 5px 0 0; }
+.progress-box { width: 100%; max-width: 400px; }
+input[type="range"] { width: 100%; accent-color: var(--green); cursor: pointer; }
+.time-labels { display: flex; justify-content: space-between; font-size: 11px; color: #b3b3b3; margin-top: 8px; }
+.controls-box { display: flex; align-items: center; gap: 35px; }
+.controls-box button { background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; }
+.play-circle { background: #fff !important; color: #000 !important; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px !important; }
+.actions-box { display: flex; gap: 40px; }
+.actions-box button { background: none; border: none; color: #b3b3b3; font-size: 22px; cursor: pointer; transition: 0.3s; }
+.liked { color: var(--green) !important; }

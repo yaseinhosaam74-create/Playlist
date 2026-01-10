@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MUSIC APP FOR YASEIN</title>
+    <link rel="icon" tybe="image/png" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div id="splash-screen">
+        <img src="logo.png" alt="Logo" class="spotify-logo">
+    </div>
+
+    <main id="main-player" class="hidden">
+        <div class="player-wrapper">
+            <div class="art-box">
+                <img id="track-art" src="" alt="Album Art">
+            </div>
+
+            <div class="info-box">
+                <h1 id="track-name">تحميل...</h1>
+                <p id="track-artist">الفنان</p>
+            </div>
+
+            <div class="progress-box">
+                <input type="range" id="progress-bar" min="0" max="100" value="0">
+                <div class="time-labels">
+                    <span id="current-time">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+
+            <div class="controls-box">
+                <button id="prev-btn"><i class="fas fa-step-backward"></i></button>
+                <button id="play-pause-btn" class="play-circle"><i class="fas fa-play"></i></button>
+                <button id="next-btn"><i class="fas fa-step-forward"></i></button>
+            </div>
+
+            <div class="actions-box">
+                <button id="like-btn" title="إعجاب"><i class="far fa-heart"></i></button>
+                <button id="share-btn" title="مشاركة"><i class="fas fa-share-alt"></i></button>
+                <button id="download-btn" title="تحميل"><i class="fas fa-cloud-download-alt"></i></button>
+            </div>
+        </div>
+    </main>
+
+    <audio id="audio-element"></audio>
+    <script src="script.js"></script>
+</body>
+</html>
