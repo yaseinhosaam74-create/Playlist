@@ -1,0 +1,43 @@
+{
+  "name": "Music Player Pro",
+  "short_name": "MusicApp",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "The Marías",
+      "url": "index.html?artist=The%20Marias",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Billie Eilish",
+      "url": "index.html?artist=Billie",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Ramy Sabry",
+      "url": "index.html?artist=Ramy",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Maha Ftouni",
+      "url": "index.html?artist=Maha",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
