@@ -82,7 +82,6 @@ const playBtn = document.getElementById('play-pause-btn');
 const progressBar = document.getElementById('progress-bar');
 
 window.addEventListener('load', () => {
-    // جلب البيانات المحفوظة من الذاكرة المحلية
     const savedIndex = localStorage.getItem('lastTrackIndex');
     const savedTime = localStorage.getItem('lastTrackTime');
 
@@ -108,7 +107,6 @@ window.addEventListener('load', () => {
 
         loadTrack(currentIndex);
 
-        // إذا كان هناك وقت محفوظ، نضبطه بعد تحميل الأغنية
         if (savedTime !== null && !artistParam) {
             audio.currentTime = parseFloat(savedTime);
         }
@@ -122,7 +120,6 @@ function loadTrack(index) {
     document.getElementById('track-art').src = `${track.file}.jpg`;
     audio.src = `${track.file}.mp3`;
 
-    // حفظ الفهرس الحالي للأغنية
     localStorage.setItem('lastTrackIndex', index);
 
     if ('mediaSession' in navigator) {
@@ -156,7 +153,6 @@ audio.ontimeupdate = () => {
     document.getElementById('current-time').innerText = formatTime(audio.currentTime);
     if(audio.duration) document.getElementById('duration').innerText = formatTime(audio.duration);
 
-    // حفظ الوقت الحالي للتشغيل كل ثانية
     localStorage.setItem('lastTrackTime', audio.currentTime);
 };
 
@@ -173,17 +169,30 @@ document.getElementById('share-btn').onclick = () => {
     if (navigator.share) navigator.share({ title: trackList[currentIndex].name, url: window.location.href });
 };
 
-document.getElementById('download-btn').onclick = () => {
+document.getElementById('download-btn').onclick = async () => {
     const t = trackList[currentIndex];
-    const a = document.createElement('a');
-    a.href = `${t.file}.mp3`;
-    a.download = `${t.name} - ${t.artist}.mp3`;
-    a.click();
+    const fileName = `${t.name} - ${t.artist}.mp3`;
+    
+    try {
+        const response = await fetch(`${t.file}.mp3`);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    } catch (error) {
+        const a = document.createElement('a');
+        a.href = `${t.file}.mp3`;
+        a.download = fileName;
+        a.click();
+    }
 };
 
-// --- حماية زر الرجوع (Back Button) لمنع إغلاق الموسيقى ---
 history.pushState(null, null, window.location.pathname);
 window.addEventListener('popstate', function (event) {
     history.pushState(null, null, window.location.pathname);
-    // يمكنك إضافة رسالة تنبيه إذا أردت: console.log("تم منع الرجوع للحفاظ على التشغيل");
 });
