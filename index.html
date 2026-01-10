@@ -5,17 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MUSIC APP FOR YASEIN</title>
     <link rel="icon" tybe="image/png" href="logo.png">
-<link rel="manifest" href="manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-<script>
-  // تسجيل الـ Service Worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
-  }
-</script>
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -23,6 +13,7 @@
     <div id="splash-screen">
         <img src="logo.png" alt="Logo" class="spotify-logo">
     </div>
+    
 
     <main id="main-player" class="hidden">
         <div class="player-wrapper">
@@ -48,15 +39,32 @@
                 <button id="play-pause-btn" class="play-circle"><i class="fas fa-play"></i></button>
                 <button id="next-btn"><i class="fas fa-step-forward"></i></button>
             </div>
-
+            
+            <br>
+            
             <div class="actions-box">
                 <button id="like-btn" title="إعجاب"><i class="far fa-heart"></i></button>
                 <button id="share-btn" title="مشاركة"><i class="fas fa-share-alt"></i></button>
                 <button id="download-btn" title="تحميل"><i class="fas fa-cloud-download-alt"></i></button>
             </div>
         </div>
+        <div class="content">
+    <h1>Yasein Hossam</h1>
+    <span class="tagline">Web Developer | Designer</span>
+    
+    <ul class="social-links">
+        <li><a href="https://www.instagram.com/_yasein74_" target="_blank" class="social-button"><i class="fab fa-instagram"></i> Instagram</a></li>
+        <li><a href="https://wa.me/201121454510" target="_blank" class="social-button"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+        <li><a href="https://www.facebook.com/share/17NNccq61n/" target="_blank" class="social-button"><i class="fab fa-facebook"></i> Facebook</a></li>
+        <li><a href="https://github.com/yaseinhosaam74-create" target="_blank" class="social-button"><i class="fab fa-github"></i> GitHub</a></li>
+    </ul>
+    <br>
+    <a href="tel:+201121454510" style="text-decoration:none; color:inherit; font-size:0.85em; opacity:0.7; display:inline-block; margin-top:20px;">
+        <i class="fas fa-phone-alt"></i>+20 112 145 4510</a>
+</div>
+</div>
     </main>
-
+    
     <audio id="audio-element"></audio>
     <script src="script.js"></script>
 </body>
