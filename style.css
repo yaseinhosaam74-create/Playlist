@@ -1,29 +1,251 @@
-:root { --green: #1DB954; --bg: #121212; }
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden; }
-
-#splash-screen { position: fixed; inset: 0; background: #000; display: flex; justify-content: center; align-items: center; z-index: 2000; }
-.spotify-logo { width: 70px; animation: pulse 1.5s infinite; }
-@keyframes pulse { 0% { opacity: 0.6; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.6; transform: scale(0.9); } }
-
-.hidden { display: none !important; }
-.player-wrapper { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; padding: 30px 20px; background: linear-gradient(to bottom, #2c2c2c 0%, #000 100%); }
-.art-box img { width: 80vw; max-width: 320px; aspect-ratio: 1/1; border-radius: 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.7); object-fit: cover; }
-.info-box { text-align: center; width: 100%; }
-.info-box h1 { font-size: 22px; margin: 0; }
-.info-box p { color: #b3b3b3; margin: 5px 0 0; }
-.progress-box { width: 100%; max-width: 400px; }
-input[type="range"] { width: 100%; accent-color: var(--green); cursor: pointer; }
-.time-labels { display: flex; justify-content: space-between; font-size: 11px; color: #b3b3b3; margin-top: 8px; }
-.controls-box { display: flex; align-items: center; gap: 35px; }
-.controls-box button { background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; }
-.play-circle { background: #fff !important; color: #000 !important; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px !important; }
-.actions-box { display: flex; gap: 40px; }
-.actions-box button { background: none; border: none; color: #b3b3b3; font-size: 22px; cursor: pointer; transition: 0.3s; }
-.liked { color: var(--green) !important; }
-body {
-  overscroll-behavior-y: contain; /* يمنع تحديث الصفحة عند السحب للأسفل */
-  user-select: none; /* يمنع تحديد النصوص لجعله يشبه التطبيقات */
-  -webkit-tap-highlight-color: transparent; /* يحذف اللون الرمادي عند الضغط */
+:root {
+    --green: #1DB954;
+    --bg-gradient: linear-gradient(to bottom, #2c2c2c 0%, #000 100%);
+    --light-grey: #b3b3b3;
+    --white: #ffffff;
 }
 
+/* الإعدادات الأساسية */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+body {
+    background: #000;
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
+    color: var(--white);
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    overscroll-behavior-y: contain;
+    user-select: none;
+}
+
+/* شاشة التحميل */
+#splash-screen {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.spotify-logo {
+    width: 70px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0.6; transform: scale(0.9); }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* المشغل الأساسي - توزيع العناصر */
+#main-player {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* توسيط المحتوى ككتلة واحدة */
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+/* صندوق صورة الألبوم مع مسافة سفلية */
+.art-box {
+    margin-bottom: 40px; /* مسافة واضحة بين الصورة والنص */
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.art-box img {
+    width: 80vw;
+    max-width: 330px;
+    aspect-ratio: 1/1;
+    border-radius: 15px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+    object-fit: cover;
+}
+
+/* معلومات الأغنية - مساحة بين العنوان والمغني */
+.info-box {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 30px; /* مسافة قبل شريط الوقت */
+}
+
+.info-box h1 {
+    font-size: 26px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.info-box p {
+    color: var(--light-grey);
+    font-size: 17px;
+    font-weight: 400;
+}
+
+/* شريط التقدم والوقت */
+.progress-box {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 35px; /* مسافة قبل أزرار التحكم */
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: var(--green);
+    cursor: pointer;
+    height: 6px;
+}
+
+.time-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--light-grey);
+    margin-top: 12px;
+}
+
+/* أزرار التحكم الأساسية (وسط) */
+.controls-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    margin-bottom: 35px; /* مسافة قبل أزرار اللايك والتحميل */
+}
+
+.controls-box button {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 35px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.play-circle {
+    background: var(--white) !important;
+    color: #000 !important;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px !important;
+    box-shadow: 0 8px 25px rgba(255,255,255,0.1);
+}
+
+/* أزرار الإضافات (تحميل، مشاركة، لايك) */
+.actions-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    width: 100%;
+}
+
+.actions-box button {
+    background: none;
+    border: none;
+    color: var(--light-grey);
+    font-size: 24px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.liked {
+    color: var(--green) !important;
+}
+
+/* الفوتر الشفاف تماماً */
+.content {
+    width: 100%;
+    padding: 60px 20px;
+    background: transparent;
+    text-align: center;
+    margin-top: auto;
+}
+
+.content h1 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.tagline {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--light-grey);
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+.social-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.social-button {
+    text-decoration: none;
+    color: var(--white);
+    font-size: 0.8rem;
+    padding: 11px 20px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.social-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-4px);
+}
+
+.content a[href^="tel:"] {
+    text-decoration: none;
+    color: var(--light-grey);
+    font-size: 0.85rem;
+    opacity: 0.6;
+}
+
+/* تعديلات للشاشات الصغيرة جداً */
+@media (max-width: 400px) {
+    #main-player { padding: 15px; }
+    .art-box { margin-bottom: 25px; }
+    .art-box img { width: 85vw; }
+    .info-box h1 { font-size: 22px; }
+    .controls-box { gap: 25px; }
+    .play-circle { width: 60px; height: 60px; }
+}
