@@ -21,3 +21,9 @@ input[type="range"] { width: 100%; accent-color: var(--green); cursor: pointer; 
 .actions-box { display: flex; gap: 40px; }
 .actions-box button { background: none; border: none; color: #b3b3b3; font-size: 22px; cursor: pointer; transition: 0.3s; }
 .liked { color: var(--green) !important; }
+body {
+  overscroll-behavior-y: contain; /* يمنع تحديث الصفحة عند السحب للأسفل */
+  user-select: none; /* يمنع تحديد النصوص لجعله يشبه التطبيقات */
+  -webkit-tap-highlight-color: transparent; /* يحذف اللون الرمادي عند الضغط */
+}
+
