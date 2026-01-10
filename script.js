@@ -51,10 +51,6 @@ const trackList = [
     { file: "Yoursxm3", name: "Maybe not good", artist: "Yoursxm" },
     { file: "Yoursxm4", name: "I miss you a lot", artist: "Yoursxm" },
     { file: "Yoursxm5", name: "Call me", artist: "Yoursxm" },
-    { file: "Yoursxm6", name: "Dream big", artist: "Yoursxm" },
-    { file: "Yoursxm7", name: "Remember", artist: "Yoursxm" },
-    { file: "Yoursxm8", name: "In another life", artist: "Yoursxm" },
-    { file: "Yoursxm9", name: "Why cry", artist: "Yoursxm" },
     // Cigarettes After Sex (5)
     { file: "CAS1", name: "Apocalypse", artist: "Cigarettes After Sex" },
     { file: "CAS2", name: "Cry", artist: "Cigarettes After Sex" },
