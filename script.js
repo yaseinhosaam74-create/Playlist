@@ -85,6 +85,24 @@ window.addEventListener('load', () => {
     setTimeout(() => {
         document.getElementById('splash-screen').style.display = 'none';
         document.getElementById('main-player').classList.remove('hidden');
+
+        // --- الجزء المضاف لمعالجة الاختصارات (Shortcuts) ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const artistParam = urlParams.get('artist');
+
+        if (artistParam) {
+            // البحث عن فهرس أول أغنية للفنان المختار
+            const artistIndex = trackList.findIndex(t => 
+                t.artist.toLowerCase().includes(artistParam.toLowerCase())
+            );
+            
+            // إذا وُجد الفنان في القائمة، اجعله هو نقطة البداية
+            if (artistIndex !== -1) {
+                currentIndex = artistIndex;
+            }
+        }
+        // ------------------------------------------------
+
         loadTrack(currentIndex);
     }, 3000);
 });
