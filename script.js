@@ -82,10 +82,36 @@ const playBtn = document.getElementById('play-pause-btn');
 const progressBar = document.getElementById('progress-bar');
 
 window.addEventListener('load', () => {
+    // جلب البيانات المحفوظة من الذاكرة المحلية
+    const savedIndex = localStorage.getItem('lastTrackIndex');
+    const savedTime = localStorage.getItem('lastTrackTime');
+
+    if (savedIndex !== null) {
+        currentIndex = parseInt(savedIndex);
+    }
+
     setTimeout(() => {
         document.getElementById('splash-screen').style.display = 'none';
         document.getElementById('main-player').classList.remove('hidden');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const artistParam = urlParams.get('artist');
+
+        if (artistParam) {
+            const artistIndex = trackList.findIndex(t => 
+                t.artist.toLowerCase().includes(artistParam.toLowerCase())
+            );
+            if (artistIndex !== -1) {
+                currentIndex = artistIndex;
+            }
+        }
+
         loadTrack(currentIndex);
+
+        // إذا كان هناك وقت محفوظ، نضبطه بعد تحميل الأغنية
+        if (savedTime !== null && !artistParam) {
+            audio.currentTime = parseFloat(savedTime);
+        }
     }, 3000);
 });
 
@@ -95,6 +121,9 @@ function loadTrack(index) {
     document.getElementById('track-artist').innerText = track.artist;
     document.getElementById('track-art').src = `${track.file}.jpg`;
     audio.src = `${track.file}.mp3`;
+
+    // حفظ الفهرس الحالي للأغنية
+    localStorage.setItem('lastTrackIndex', index);
 
     if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
@@ -126,6 +155,9 @@ audio.ontimeupdate = () => {
     progressBar.value = progress || 0;
     document.getElementById('current-time').innerText = formatTime(audio.currentTime);
     if(audio.duration) document.getElementById('duration').innerText = formatTime(audio.duration);
+
+    // حفظ الوقت الحالي للتشغيل كل ثانية
+    localStorage.setItem('lastTrackTime', audio.currentTime);
 };
 
 progressBar.oninput = () => { audio.currentTime = (progressBar.value / 100) * audio.duration; };
@@ -148,3 +180,10 @@ document.getElementById('download-btn').onclick = () => {
     a.download = `${t.name} - ${t.artist}.mp3`;
     a.click();
 };
+
+// --- حماية زر الرجوع (Back Button) لمنع إغلاق الموسيقى ---
+history.pushState(null, null, window.location.pathname);
+window.addEventListener('popstate', function (event) {
+    history.pushState(null, null, window.location.pathname);
+    // يمكنك إضافة رسالة تنبيه إذا أردت: console.log("تم منع الرجوع للحفاظ على التشغيل");
+});
