@@ -180,6 +180,12 @@ input[type="range"] {
     color: var(--green) !important;
 }
 
+body {
+  overscroll-behavior-y: contain; /* يمنع تحديث الصفحة عند السحب للأسفل */
+  user-select: none; /* يمنع تحديد النصوص لجعله يشبه التطبيقات */
+  -webkit-tap-highlight-color: transparent; /* يحذف اللون الرمادي عند الضغط */
+}
+
 /* الفوتر الشفاف تماماً */
 .content {
     width: 100%;
