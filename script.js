@@ -118,3 +118,12 @@ document.getElementById('download-btn').onclick = () => {
 };
 
 document.getElementById('like-btn').onclick = function() { this.classList.toggle('liked'); };
+
+setTimeout(() => {
+    document.getElementById('splash-screen').style.display = 'none';
+    document.getElementById('main-player').classList.remove('hidden');
+    loadTrack(currentIndex);
+    
+    // هذا السطر يجعل الريموت يبدأ من زر التشغيل فوراً
+    playBtn.focus(); 
+}, 2500);
