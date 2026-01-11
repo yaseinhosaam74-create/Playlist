@@ -3,103 +3,108 @@ const audio = document.getElementById('audio-element');
 const playBtn = document.getElementById('play-pause-btn');
 const progressBar = document.getElementById('progress-bar');
 
-window.addEventListener('load', () => {
-    // جلب البيانات المحفوظة من الذاكرة المحلية
+// عند تحميل الصفحة
+window.onload = function() {
     const savedIndex = localStorage.getItem('lastTrackIndex');
-    const savedTime = localStorage.getItem('lastTrackTime');
-
-    if (savedIndex !== null) {
-        currentIndex = parseInt(savedIndex);
-    }
+    if (savedIndex !== null) { currentIndex = parseInt(savedIndex); }
 
     setTimeout(() => {
         document.getElementById('splash-screen').style.display = 'none';
         document.getElementById('main-player').classList.remove('hidden');
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const artistParam = urlParams.get('artist');
-
-        if (artistParam) {
-            const artistIndex = trackList.findIndex(t => 
-                t.artist.toLowerCase().includes(artistParam.toLowerCase())
-            );
-            if (artistIndex !== -1) {
-                currentIndex = artistIndex;
-            }
-        }
-
+        
         loadTrack(currentIndex);
+        
+        // توجيه التركيز لزر التشغيل ليعمل الريموت فوراً
+        playBtn.focus();
+    }, 2500);
+};
 
-        // إذا كان هناك وقت محفوظ، نضبطه بعد تحميل الأغنية
-        if (savedTime !== null && !artistParam) {
-            audio.currentTime = parseFloat(savedTime);
-        }
-    }, 3000);
-});
-
+// وظيفة تحميل الأغنية
 function loadTrack(index) {
+    if (typeof trackList === 'undefined') return;
+    
     const track = trackList[index];
     document.getElementById('track-name').innerText = track.name;
     document.getElementById('track-artist').innerText = track.artist;
-    document.getElementById('track-art').src = `${track.file}.jpg`;
-    audio.src = `${track.file}.mp3`;
+    document.getElementById('track-art').src = track.file + ".jpg";
+    audio.src = track.file + ".mp3";
+    
+    // أمر إجباري لمتصفحات التلفزيون لضمان التحميل
+    audio.load();
 
-    // حفظ الفهرس الحالي للأغنية
     localStorage.setItem('lastTrackIndex', index);
-
-    if ('mediaSession' in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({
-            title: track.name, artist: track.artist,
-            artwork: [{ src: `${track.file}.jpg`, sizes: '512x512', type: 'image/jpeg' }]
-        });
-        navigator.mediaSession.setActionHandler('play', togglePlay);
-        navigator.mediaSession.setActionHandler('pause', togglePlay);
-        navigator.mediaSession.setActionHandler('nexttrack', nextTrack);
-        navigator.mediaSession.setActionHandler('previoustrack', prevTrack);
-    }
 }
 
+// وظيفة التشغيل والإيقاف
 function togglePlay() {
-    if (audio.paused) { 
-        audio.play(); 
-        playBtn.innerHTML = '<i class="fas fa-pause"></i>'; 
-    } else { 
-        audio.pause(); 
-        playBtn.innerHTML = '<i class="fas fa-play"></i>'; 
+    if (audio.paused) {
+        audio.play().catch(e => console.log("Interaction required"));
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    } else {
+        audio.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
     }
 }
 
-function nextTrack() { 
-    currentIndex = (currentIndex + 1) % trackList.length; 
-    loadTrack(currentIndex); 
-    audio.play(); 
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>'; 
+// التنقل للأغنية التالية
+function nextTrack() {
+    currentIndex = (currentIndex + 1) % trackList.length;
+    loadTrack(currentIndex);
+    audio.play();
+    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
 }
 
-function prevTrack() { 
-    currentIndex = (currentIndex - 1 + trackList.length) % trackList.length; 
-    loadTrack(currentIndex); 
-    audio.play(); 
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>'; 
+// التنقل للأغنية السابقة
+function prevTrack() {
+    currentIndex = (currentIndex - 1 + trackList.length) % trackList.length;
+    loadTrack(currentIndex);
+    audio.play();
+    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
 }
 
+// --- دعم التحكم عن طريق الريموت كنترول (Android TV) ---
+document.addEventListener('keydown', (e) => {
+    switch(e.key) {
+        case "Enter": // زر OK في الريموت
+            if (document.activeElement) document.activeElement.click();
+            break;
+        case "ArrowRight": // سهم يمين للتقديم (اختياري)
+            if (document.activeElement === progressBar) audio.currentTime += 5;
+            break;
+        case "ArrowLeft": // سهم يسار للتأخير (اختياري)
+            if (document.activeElement === progressBar) audio.currentTime -= 5;
+            break;
+        case "MediaPlayPause":
+            togglePlay();
+            break;
+        case "MediaTrackNext":
+            nextTrack();
+            break;
+        case "MediaTrackPrevious":
+            prevTrack();
+            break;
+    }
+});
+
+// ربط الأزرار
 playBtn.onclick = togglePlay;
 document.getElementById('next-btn').onclick = nextTrack;
 document.getElementById('prev-btn').onclick = prevTrack;
 audio.onended = nextTrack;
 
+// تحديث شريط التقدم والوقت
 audio.ontimeupdate = () => {
-    const progress = (audio.currentTime / audio.duration) * 100;
-    progressBar.value = progress || 0;
-    document.getElementById('current-time').innerText = formatTime(audio.currentTime);
-    if(audio.duration) document.getElementById('duration').innerText = formatTime(audio.duration);
-
-    // حفظ الوقت الحالي للتشغيل كل ثانية
-    localStorage.setItem('lastTrackTime', audio.currentTime);
+    if (audio.duration) {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        progressBar.value = progress;
+        
+        document.getElementById('current-time').innerText = formatTime(audio.currentTime);
+        document.getElementById('duration').innerText = formatTime(audio.duration);
+    }
 };
 
-progressBar.oninput = () => { 
-    audio.currentTime = (progressBar.value / 100) * audio.duration; 
+progressBar.oninput = () => {
+    audio.currentTime = (progressBar.value / 100) * audio.duration;
 };
 
 function formatTime(secs) {
@@ -107,45 +112,9 @@ function formatTime(secs) {
     return `${m}:${s < 10 ? '0' + s : s}`;
 }
 
-document.getElementById('like-btn').onclick = function() { 
-    this.classList.toggle('liked'); 
+// وظيفة التحميل البسيطة المتوافقة مع الشاشات
+document.getElementById('download-btn').onclick = () => {
+    window.open(trackList[currentIndex].file + ".mp3", '_blank');
 };
 
-document.getElementById('share-btn').onclick = () => {
-    if (navigator.share) {
-        navigator.share({ 
-            title: trackList[currentIndex].name, 
-            url: window.location.href 
-        });
-    }
-};
-
-// وظيفة التحميل مع إعادة التسمية التلقائية
-document.getElementById('download-btn').onclick = async () => {
-    const t = trackList[currentIndex];
-    const fileName = `${t.name} - ${t.artist}.mp3`;
-    
-    try {
-        const response = await fetch(`${t.file}.mp3`);
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-    } catch (error) {
-        // حل احتياطي في حال فشل الـ fetch
-        const a = document.createElement('a');
-        a.href = `${t.file}.mp3`;
-        a.download = fileName;
-        a.click();
-    }
-};
-
-history.pushState(null, null, window.location.pathname);
-window.addEventListener('popstate', function (event) {
-    history.pushState(null, null, window.location.pathname);
-});
+document.getElementById('like-btn').onclick = function() { this.classList.toggle('liked'); };
