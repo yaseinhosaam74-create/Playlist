@@ -180,12 +180,6 @@ input[type="range"] {
     color: var(--green) !important;
 }
 
-body {
-  overscroll-behavior-y: contain; /* يمنع تحديث الصفحة عند السحب للأسفل */
-  user-select: none; /* يمنع تحديد النصوص لجعله يشبه التطبيقات */
-  -webkit-tap-highlight-color: transparent; /* يحذف اللون الرمادي عند الضغط */
-}
-
 /* الفوتر الشفاف تماماً */
 .content {
     width: 100%;
@@ -254,25 +248,4 @@ body {
     .info-box h1 { font-size: 22px; }
     .controls-box { gap: 25px; }
     .play-circle { width: 60px; height: 60px; }
-}
-
-/* تأثير عند الوقوف على الزر بالريموت */
-button:focus, input[type="range"]:focus {
-    outline: 3px solid #1DB954; /* إطار أخضر واضح */
-    outline-offset: 4px;
-    transform: scale(1.15); /* تكبير بسيط للزر المختار */
-    transition: all 0.2s ease;
-}
-
-/* تأثير خاص لزر التشغيل الدائري */
-.play-circle:focus {
-    background-color: #1DB954 !important;
-    color: white !important;
-    box-shadow: 0 0 20px rgba(29, 185, 84, 0.5);
-}
-
-/* تحسين شكل شريط التقدم عند اختياره بالريموت */
-input[type="range"]:focus {
-    background: #333;
-    border-radius: 10px;
 }
